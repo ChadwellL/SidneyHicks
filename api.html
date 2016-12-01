@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Sidney Hicks - Weather Maps</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="javascripts/jquery-1.11.3.js"></script>
+		<script type="text/javascript">
+
+// dropdown menu idea - https://www.youtube.com/watch?v=vwJ6LKIVt5Y
+
+$(document).ready(function() {
+			$('li').hover(function(){
+				$(this).find('ul>li').stop().fadeToggle(300); // time of fade out & in
+
+			});
+		});
+		</script>
+
+<!--Open Weather Map & Google Maps Combined API-->
+
+<!--Information for help - https://developers.google.com/maps/documentation/javascript/-->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCficrxU4MgA_ny6F8NeaOr1tYHdR89mkU">
+</script>
+<script>
+  function mapLocation() {
+    var mapChoice = {
+            zoom: 6,
+            center: new google.maps.LatLng (51.4877, -3.1790) // coordinates for Cardiff as starting point for map
+};
+
+map = new google.maps.Map(document.getElementById('viewMap'), // 'the map object' generates a single map on the page
+        mapChoice);
+
+
+google.maps.event.addListener(map, 'idle', checkRequest); // loads map (event driven)
+
+// (Below) When user clicks the map shows location, weather information and temperature
+
+    map.data.addListener('click', function(event) {
+      windowData.setContent(
+       "<strong>" + event.feature.getProperty("city") + "</strong>" // accesses location property
+       + "<br />" + event.feature.getProperty("weather") // accesses weather type property
+       + "<br />" + event.feature.getProperty("temperature") + "&deg;C" // accesses temperature property
+);
+      windowData.setOptions({
+          position:{
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          },
+          
+});
+      windowData.open(map);
+});
+}
+  var checkRequest = function() {
+    while (getResults === true) {		// ends requests being sent
+      call.abort();						// stops javascript execution
+      getResults = false;
+    }
+    findLocation();
+};
+
+// (Below) Grabs locations from map bounds
+
+  var findLocation = function() {
+    var boundary = map.getBounds();	// returns the lat/lng bounds
+    var northEast = boundary.getNorthEast();
+    var southWest = boundary.getSouthWest();
+    getForecast(northEast.lat(), northEast.lng(), southWest.lat(), southWest.lng());
+};
+  var getForecast = function(nLatitude, sLatitude, eLongitude, wLongitude) { // weather requests
+    getResults = true;
+
+// (Below) Sourced weather
+
+    var findInfo = "http://api.openweathermap.org/data/2.5/box/city?bbox="
+                        + wLongitude + "," + nLatitude + ","
+                        + eLongitude + "," + sLatitude + ","
+                        + map.getZoom()
+                        + "&cluster=yes&format=json" // server clustering of points
+                        + "&APPID=" + useWeatherKey;
+    // (Below) sends a request to the server                   
+    call = new XMLHttpRequest();
+    call.onload = useFindings;
+    call.open("get", findInfo, true);   // used to specify the type of request & sends request to server
+    call.send();
+};
+
+  var useFindings = function() { // receieves json and deals with findings
+    console.log(this);
+    var findings = JSON.parse(this.responseText);
+    if (findings.list.length > 0) {
+        resetInfo();
+        for (var i = 0; i < findings.list.length; i++) {
+          mapJSON.features.push(JSONToLocation(findings.list[i]));
+        }
+        mapSymbols(mapJSON); // displays the markers on the canvas
+	}
+};
+  var windowData = new google.maps.InfoWindow();
+  var JSONToLocation = function (forecastObject) { // changes the data to geoJson
+    var component = {
+      type: "Feature", // a feature object
+      properties: {
+
+  	// shows the place, weather and temperature as icons on map
+    city: forecastObject.name,
+    temperature: forecastObject.main.temp,
+    weather: forecastObject.weather[0].main,
+    icon: "http://openweathermap.org/img/w/"
+
+          + forecastObject.weather[0].icon  + ".png",
+    coordinates: [forecastObject.coord.lon, forecastObject.coord.lat]
+},
+      geometry: {
+        type: "Point",
+        coordinates: [forecastObject.coord.lon, forecastObject.coord.lat]
+      }
+};
+    // Set the custom marker icon
+    map.data.setStyle(function(component) {
+      return {
+        icon: {
+          url: component.getProperty('icon'),
+    // position of weather icons - kept as close as possible to city centre for an accurate reading
+          anchor: new google.maps.Point(26, 26) 
+        }
+    };
+});
+    return component;
+};
+
+  var mapJSON;
+  var mapSymbols = function (weather) { // inserts markers on canvas
+     map.data.addGeoJson(mapJSON);
+     getResults = false;
+};
+ 
+  var resetInfo = function () {  // resets data collected and geojson
+    mapJSON = {
+      type: "FeatureCollection",
+      features: [] };
+    map.data.forEach(function(component) {
+      map.data.remove(component);
+    });
+};
+  google.maps.event.addDomListener(window, 'load', mapLocation); // 'Dom' event is incorporated to display an alert
+  var mainMap;
+  var call;
+  var getResults = false;
+  var useWeatherKey = "30273a6b1ea57672e76dbaff66e7c26a" // open weather map key used to access API
+</script>
+	</head>	
+<body>
+	<header>
+		<a href="index.html"><img src="sidneyhickslogo.jpg" alt="Homepage" width="240" height="100"></a>
+		<div class="slogan">
+			<h5><em>Rather nice stuff for rather nice people</em></h5>
+		</div>
+	</header>
+
+<!--Nav Bar - Different sections of website-->
+
+	<nav>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="about.html">About Us (Our Story)</a></li>
+			<li><a href="gallery.html">Gallery</a></li>
+			<li><a href="weather.html">5 Day Forecast</a>
+				<ul>
+					<li><a href="api.html">Weather Map</a></li>
+				</ul>
+			</li>
+			<li><a href="instapi.html">Cycle Route</a></li>
+			<li><a href="contact.html">Contact Us</a></li>
+		</ul>
+	</nav>
+	<div id="weatherHeading">
+		<h1>Maps (Weather Forecast)</h1>
+	</div>
+			<div class="mapsPara">
+				<p>Please use our extremely useful weather map tool and never have another cycle ride cancelled due to the weather!</p>
+				<p>Keep ahead of the weather by finding your location</p>
+			</div>
+
+<div id="viewMap"></div>
+
+	<footer>
+		<div class="footerImg"><a href="index.html"><img src="sidneyhickslogo.jpg" alt="Go Home" width="220" height="100"></a>
+			<div class="copyright">
+				<p>&copy; Sidney Hicks</p>
+			</div>
+		</div><!--sidney hicks company logo-->
+	</footer>
+</body>
+</html>

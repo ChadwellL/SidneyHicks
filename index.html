@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="utf-8">
+		<title>Sidney Hicks</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="javascripts/jquery-1.11.3.js"></script>
+		<script type="text/javascript">
+
+// Set the custom marker icon dropdown menu idea from https://www.youtube.com/watch?v=vwJ6LKIVt5Y
+
+
+$(document).ready(function() {
+			$('li').hover(function(){
+				$(this).find('ul>li').stop().fadeToggle(300); // time of fade out & in
+
+			});
+		});
+		</script>
+
+<!--image slider - idea from www.youtube.com/watch?v=7DcoiLed2iY-->
+
+		<script type="text/javascript">
+		var imageTotal = 1;
+		var sum = 4;
+		function nextPhoto(x) {
+			var Image = document.getElementById('img');
+			imageTotal = imageTotal + x;
+
+			if(imageTotal > sum) { imageTotal = 1;}
+			if(imageTotal < 1) {imageTotal = sum;}
+			imageSlider.src = "images/img"+ imageTotal + ".jpg";
+		}
+
+// code below creates the automatic repeating photo slide
+
+	window.setInterval(function nextPhotoA() {
+			var Image = document.getElementById('img');
+			imageTotal = imageTotal + 1;
+			if(imageTotal > sum) { imageTotal = 1;} // creates a loop between images
+			if(imageTotal < 1) {imageTotal = sum;}
+			imageSlider.src = "images/img"+ imageTotal + ".jpg";
+		},6000); // time between image changes
+		</script>
+	</head>	
+<body>
+	<header>
+		<a href="index.html"><img src="sidneyhickslogo.jpg" alt="Homepage" width="240" height="100"></a>
+		<div class="slogan">
+			<h5><em>Rather nice stuff for rather nice people</em></h5>
+		</div>
+	</header>
+
+<!--Nav Bar - Different sections of website-->
+
+<nav>
+<ul>
+	<li><a href="index.html">Home</a></li>
+	<li><a href="about.html">About Us (Our Story)</a></li>
+	<li><a href="gallery.html">Gallery</a></li>
+	<li><a href="weather.html">5 Day Forecast</a>
+		<ul>
+			<li><a href="api.html">Weather Map</a></li>
+		</ul>
+	</li>
+	<li><a href="instapi.html">Cycle Route</a></li>
+	<li><a href="contact.html">Contact Us</a></li>
+</ul>
+</nav>
+	<div class="fixieBackground">
+		<img src="fixiebackground.jpg" alt="fixiebackground">
+	</div>
+
+	<div id="mainSection">
+		<h1>Sidney Hicks</h1>
+			<div class="introPara">
+				<p>Our aim at Sidney Hicks is to inspire cyclists into using traditional means of transportation.</p>
+				<p>We have useful tools such as temperature and weather forecast apps that all cyclists should use!</p>
+				<p>Please browse our custom bike projects and feel free to get in touch, we are always keen to hear from our fans!</p>
+			</div>
+				<div class="secondPara">
+					<p><strong>Our Example Projects - </strong>Click left and right to scroll through our previous projects</p>
+				</div>
+	</div>
+
+<!--slider feature-->
+
+<div id="slider">
+	<img src="images/img1.jpg" alt="bikes" id="imageSlider">
+		<div id="leftArrow"><img onClick="nextPhoto(-1)" alt="button" class="left" src="images/arrowleft.jpg"></div>
+		<div id="rightArrow"><img onClick="nextPhoto(1)" alt="button" class="right" src="images/arrowright.jpg">
+		</div>
+</div>
+	<footer>
+		<div class="footerImg"><a href="index.html"><img src="sidneyhickslogo.jpg" alt="Go Home" width="220" height="100"></a>
+			<div class="copyright">
+				<p>&copy; Sidney Hicks</p>
+			</div>
+		</div><!--sidney hicks company logo-->
+	</footer>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Sidney Hicks - Temperature Forecast</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="javascripts/jquery-1.11.3.js"></script>
+		<script type="text/javascript">
+
+// dropdown menu idea - https://www.youtube.com/watch?v=vwJ6LKIVt5Y
+
+$(document).ready(function() {
+			$('li').hover(function(){
+				$(this).find('ul>li').stop().fadeToggle(300); // time of fade out & in
+
+			});
+		});
+		</script>
+
+
+<!--weather app - idea from http://openweathermap.org/forecast5-->
+
+	<script>
+	var weatherSource = '30273a6b1ea57672e76dbaff66e7c26a', // API code from openweathermap.org
+	  openUrl = 'http://api.openweathermap.org/data/2.5/forecast'
+	var getData = function(units) {
+		var placeName = $('#city-name').val() // gets city (place) name from openWeatherMap API 
+		if (placeName && placeName != ''){ // ajax callback 
+			placeName = placeName.trim()
+			getInformation(openUrl, placeName, weatherSource, units) 
+		}
+	}
+	$(document).ready(function(){
+		$('.btn-metric').click(function() { 
+			getData('metric') // specified temperature in metric (celcius) instead of fahrenheit
+	})
+		
+	})
+	function getInformation (url, placeName, applicationId, units) {
+		var request = $.ajax(
+	{
+			dataType: "JSONP",
+			url: url,
+			jsonpCallback: "collectData",
+			data: {q: placeName, appid: applicationId, units: units},
+			type: "GET" // get request 
+	})
+	}
+	function collectData (forecast) { // gets forecast from 'http://api.openweathermap.org/data/2.5/forecast'
+		console.log(forecast)
+
+	// to ensure the user gets a more accurate search I have used both city and country
+		var html = '',
+		  placeName = forecast.city.name, 
+			country = forecast.city
+
+	// displays the place name as a title above results so that is easy for user to understand weather 
+		html += '<h2> The temperature in: ' + placeName + '</h2>'
+
+		forecast.list.forEach(function(forecastItem, index, list){ // in results - date and time & temperature
+			html += '<p>' + 'Date & Time: ' + forecastItem.dt_txt + '  ' + 'Temperature: ' + forecastItem.main.temp + ' °C' +'</p>'
+	})
+
+		$('#weatherResults').html(html)
+	}
+	</script>
+	</head>	
+<body>
+	<header>
+		<a href="index.html"><img src="sidneyhickslogo.jpg" alt="Homepage" width="240" height="100"></a>
+		<div class="slogan">
+			<h5><em>Rather nice stuff for rather nice people</em></h5>
+		</div>
+	</header>
+
+<!--Nav Bar - Different sections of website-->
+
+	<nav>
+		<ul>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="about.html">About Us (Our Story)</a></li>
+		<li><a href="gallery.html">Gallery</a></li>
+		<li><a href="weather.html">5 Day Forecast</a>
+			<ul>
+				<li><a href="api.html">Weather Map</a></li>
+			</ul>
+		</li>
+		<li><a href="instapi.html">Cycle Route</a></li>
+		<li><a href="contact.html">Contact Us</a></li>
+	</ul>
+	</nav>
+
+<div id="weatherHeader">
+	<h1>Temperature Forecast (5 Day)</h1>
+</div>
+<div id="weatherSection">
+	<p>Long or short sleeves? Use our temperature app to find out how many layers you need on!</p>
+	<p>Please insert the name of city for its temperature.</p>
+	<p>Ensure to state the <strong>city</strong> and <strong>country</strong> you desire, etc. Birmingham, UK.</p>
+</div>
+	
+
+<!--Weather app-->
+
+
+<div class="weatherApp">
+	<div class="weatherList">
+		<input type="text" placeholder="Name of City" id="city-name" value=""/>
+		</div>
+	<div class="weatherList">
+		<input type="button" class="btn-primary btn btn-metric" value="GET FORECAST!"/>		
+		</div>
+	<div class="weatherList">
+		<div id="weatherResults"><strong>Temperature is displayed here...</strong></div>
+	</div>
+</div>
+
+	<footer>
+		<div class="footerImg"><a href="index.html"><img src="sidneyhickslogo.jpg" alt="Go Home" width="220" height="100"></a>
+			<div class="copyright">
+				<p>&copy; Sidney Hicks</p>
+			</div>
+		</div><!--sidney hicks company logo-->
+	</footer>
+</body>
+</html>

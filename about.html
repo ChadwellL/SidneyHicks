@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Sidney Hicks - About Us</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="javascripts/jquery-1.11.3.js"></script>
+		<script type="text/javascript">
+
+// dropdown menu idea - https://www.youtube.com/watch?v=vwJ6LKIVt5Y
+
+$(document).ready(function() {
+			$('li').hover(function(){
+				$(this).find('ul>li').stop().fadeToggle(300); // time of fade out & in
+
+			});
+		});
+		</script>
+	</head>	
+<body>
+	<header>
+		<a href="index.html"><img src="sidneyhickslogo.jpg" alt="Homepage" width="240" height="100"></a>
+		<div class="slogan">
+			<h5><em>Rather nice stuff for rather nice people</em></h5>
+		</div>
+	</header>
+
+<!--Nav Bar - Different sections of website-->
+
+	<nav>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="about.html">About Us (Our Story)</a></li>
+			<li><a href="gallery.html">Gallery</a></li>
+			<li><a href="weather.html">5 Day Forecast</a>
+				<ul>
+					<li><a href="api.html">Weather Map</a></li>
+				</ul>
+			</li>
+			<li><a href="instapi.html">Cycle Route</a></li>
+			<li><a href="contact.html">Contact Us</a></li>
+		</ul>
+	</nav>
+	<div id="aboutSection">
+		<h1>Sidney Hicks - Our Story</h1>
+	</div>
+		<div class="aboutPara">
+			<p>Sidney Hicks is about 'nice stuff for nice people'. That means bicycle frames and components that compliment each other, accessories that our team use and trust.</p>
+			<p>Or perhaps we may just have that item or brand not seen elsewhere that Sidney Hicks have sourced and hidden away for our own discerning customers.</p>
+		</div>
+	<div class="aboutFrame">
+		<img src="zoomedframe.jpg" alt="zoomedframe" height="450" width="700">
+	</div>
+	<footer>
+		<div class="footerImg"><a href="index.html"><img src="sidneyhickslogo.jpg" alt="Go Home" width="220" height="100"></a>
+			<div class="copyright">
+				<p>&copy; Sidney Hicks</p>
+			</div>
+		</div><!--sidney hicks company logo-->
+	</footer>
+</body>
+</html>

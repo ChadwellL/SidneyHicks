@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Sidney Hicks - Cycle Routes</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="javascripts/jquery-1.11.3.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCficrxU4MgA_ny6F8NeaOr1tYHdR89mkU&callback=loadMap&signed_in=true&libraries=places"> /*adding async attribute makes the browser fetch the script asynchronously.  defer instructs the browser to execute script when the dom is ready*/ 
+		</script>
+
+		<script type="text/javascript">
+
+// dropdown menu idea - https://www.youtube.com/watch?v=vwJ6LKIVt5Y
+
+$(document).ready(function() {
+			$('li').hover(function(){
+				$(this).find('ul>li').stop().fadeToggle(300); // time of fade out & in
+			});
+		});
+		</script>
+
+<!--google maps api - https://developers.google.com/maps/documentation/javascript/tutorial-->
+
+<!--creates google map cycle route idea from - https://developers.google.com/maps/documentation/javascript/trafficlayer-->
+
+<script> 
+function loadMap() {
+  var cyclingMap = new google.maps.Map(document.getElementById('cyclingMap'),
+   {
+    zoom: 15,
+    center: {lat: 51.4877, lng: -3.1790} // selected cardiff university as start
+  });
+  var cycleTrack = new google.maps.BicyclingLayer();
+  cycleTrack.setMap(cyclingMap);
+}
+</script>
+
+	</head>	
+<body>
+	<header>
+		<a href="index.html"><img src="sidneyhickslogo.jpg" alt="Homepage" width="240" height="100"></a>
+		<div class="slogan">
+			<h5><em>Rather nice stuff for rather nice people</em></h5>
+		</div>
+	</header>
+
+<!--Nav Bar - Different sections of website-->
+
+	<nav>
+		<ul>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="about.html">About Us (Our Story)</a></li>
+		<li><a href="gallery.html">Gallery</a></li>
+		<li><a href="weather.html">5 Day Forecast</a>
+			<ul>
+				<li><a href="api.html">Weather Map</a></li>
+			</ul>
+		</li>
+		<li><a href="instapi.html">Cycle Route</a></li>
+		<li><a href="contact.html">Contact Us</a></li>
+	</ul>
+	</nav>
+	<div id="routeSection">
+		<h1>Google Maps Cycle Route Viewer</h1>
+	</div>
+		<div class="routePara">
+			<p>The team at Sidney Hicks recommends this Google Maps Cycle route finder to locate the best route for you.</p>
+			<p>The Dark Green lines are dedicated cycle routes and the Light Green lines are roads with dedicated bicycle lanes</p>
+			<p>Dotted lines are roads or streets that recommend bike usage.</p>
+			<p><strong>Drag the map anywhere in the world to find the best route for you!</strong></p>
+		</div>
+				<div id="cyclingMap"></div>
+		<footer>
+			<div class="footerImg"><a href="index.html"><img src="sidneyhickslogo.jpg" alt="Go Home" width="220" height="100"></a>
+				<div class="copyright">
+					<p>&copy; Sidney Hicks</p>
+				</div>
+			</div><!--sidney hicks company logo-->
+		</footer>
+</body>
+</html>
